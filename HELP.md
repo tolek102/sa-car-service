@@ -39,3 +39,5 @@ zaimplementuj HATEOAS
 
 Do metosy patch użyto refleksji, dzęki czemu wystarczy, że podamy tylko wybrane pola jakie chcemy zupdatować zamiast uzupełniania całego 
 modelu nulami, co w sumie i tak jest niemożliwe ze względu na zastosowaną walidację pól modelu.
+
+Po uruchomieniu swagger dostępny pod url: http://localhost:8080/swagger-ui/index.html
