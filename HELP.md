@@ -34,3 +34,8 @@ zaimplementuj HATEOAS
 * jUnit5
 * swaggerUI 3
 * HATEOAS
+
+### Info
+
+Do metosy patch użyto refleksji, dzęki czemu wystarczy, że podamy tylko wybrane pola jakie chcemy zupdatować zamiast uzupełniania całego 
+modelu nulami, co w sumie i tak jest niemożliwe ze względu na zastosowaną walidację pól modelu.

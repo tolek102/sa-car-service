@@ -1,6 +1,7 @@
 package pl.springacademy.carservice.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import pl.springacademy.carservice.model.Car;
 import pl.springacademy.carservice.model.Color;
-import pl.springacademy.carservice.model.UpdateCarAllowedFields;
 import pl.springacademy.carservice.service.CarService;
 
 @RestController
@@ -54,8 +54,8 @@ public class CarController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Car> updateCarById(@PathVariable final int id, @RequestBody final UpdateCarAllowedFields car) {
-        return carService.updateCarById(id, car);
+    public ResponseEntity<Car> updateCarById(@PathVariable final int id, @RequestBody final Map<Object, Object> fieldsToUpdate) {
+        return carService.updateCarById(id, fieldsToUpdate);
     }
 
     @DeleteMapping("/{id}")

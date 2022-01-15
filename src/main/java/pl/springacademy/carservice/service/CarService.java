@@ -1,6 +1,7 @@
 package pl.springacademy.carservice.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.springacademy.carservice.model.Car;
 import pl.springacademy.carservice.model.Color;
-import pl.springacademy.carservice.model.UpdateCarAllowedFields;
 import pl.springacademy.carservice.repository.CarRepository;
 
 @Slf4j
@@ -86,7 +86,7 @@ public class CarService {
         return new ResponseEntity<>(newCar, HttpStatus.OK);
     }
 
-    public ResponseEntity<Car> updateCarById(final int id, final UpdateCarAllowedFields newCar) {
+    public ResponseEntity<Car> updateCarById(final int id, final Map<Object, Object> fieldsToUpdate) {
         final Optional<Car> queriedCar = findCarById(id);
 
         if (queriedCar.isEmpty()) {
@@ -94,8 +94,8 @@ public class CarService {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        final Car car = carRepository.updatePartialCar(queriedCar.get(), newCar);
-        return new ResponseEntity<>(car, HttpStatus.OK);
+        final Car updatedCar = carRepository.updatePartialCarData(queriedCar.get(), fieldsToUpdate);
+        return new ResponseEntity<>(updatedCar, HttpStatus.OK);
     }
 
     public ResponseEntity<Car> deleteCarById(final int id) {
