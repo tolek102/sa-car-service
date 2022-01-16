@@ -31,6 +31,7 @@ zaimplementuj HATEOAS
 * java11
 * springboot 2.6.2
 * lombook
+* JUnit 5
 * swaggerUI 3
 * HATEOAS
 
