@@ -1,5 +1,7 @@
 package pl.springacademy.carservice.model;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -7,7 +9,7 @@ import lombok.NonNull;
 @Data
 @Builder
 @NonNull
-public class Car {
+public class Car extends RepresentationModel<Car> {
 
     private int id;
     private String mark;

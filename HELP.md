@@ -1,4 +1,4 @@
-# Akademia springa - moduł 3
+# Akademia springa - moduł 3 - branch `module_3_task`
 
 ## REST Car service
 
@@ -31,13 +31,19 @@ zaimplementuj HATEOAS
 * java11
 * springboot 2.6.2
 * lombook
-* jUnit5
 * swaggerUI 3
 * HATEOAS
 
 ### Info
 
-Do metosy patch użyto refleksji, dzęki czemu wystarczy, że podamy tylko wybrane pola jakie chcemy zupdatować zamiast uzupełniania całego 
-modelu nulami, co w sumie i tak jest niemożliwe ze względu na zastosowaną walidację pól modelu.
+Do metosy patch użyto refleksji, dzęki czemu wystarczy, że podamy tylko wybrane pola jakie chcemy zrobić update zamiast 
+uzupełniania całego modelu nulami, co w sumie i tak jest niemożliwe ze względu na zastosowaną walidację pól modelu.
 
 Po uruchomieniu swagger dostępny pod url: http://localhost:8080/swagger-ui/index.html
+
+Aby Swagger 3 działał z użytą wersją spronga należało dodać odpowiedni wpis w konfiguracji (spowodowane jest to bugiem po stronie 
+springfoxa)   
+`spring.mvc.pathmatch.matching-strategy = ant-path-matcher` 
+
+Niestety jeśli będzie potrzeba użycia actuatora trzeba będzie zamienić swaggera na openApi, lub zrobić downgrade wersji spronga (chyba, 
+że wyjdzie wersja swaggera z poprawką)
