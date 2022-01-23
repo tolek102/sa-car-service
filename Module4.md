@@ -22,5 +22,10 @@ usuwania jednej pozycji
 * JUnit 5
 * swaggerUI 3
 * Thymeleaf
+* html
+* css
 
 ### Info
+Proste gui do obsługi Api
+
+http://localhost:8080/cars
