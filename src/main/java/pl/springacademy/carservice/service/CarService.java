@@ -1,5 +1,6 @@
 package pl.springacademy.carservice.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import pl.springacademy.carservice.model.Car;
 import pl.springacademy.carservice.model.Color;
 import pl.springacademy.carservice.repository.CarRepository;
+
+import static java.util.Objects.nonNull;
 
 @Slf4j
 @Service
@@ -72,6 +75,29 @@ public class CarService {
 
         if (queriedCar.isEmpty()) {
             return Optional.empty();
+        }
+
+        final Car updatedCar = carRepository.updatePartialCarData(queriedCar.get(), fieldsToUpdate);
+        return Optional.of(updatedCar);
+    }
+
+    public Optional<Car> updateCarById(final int id, final Car newCar) {
+        final Optional<Car> queriedCar = findCarById(id);
+
+        if (queriedCar.isEmpty()) {
+            return Optional.empty();
+        }
+
+        final Map<Object, Object> fieldsToUpdate = new HashMap<>();
+
+        if (nonNull(newCar.getMark()) && !queriedCar.get().getMark().equals(newCar.getMark())) {
+            fieldsToUpdate.put("mark", newCar.getMark());
+        }
+        if (nonNull(newCar.getModel()) && !queriedCar.get().getModel().equals(newCar.getModel())) {
+            fieldsToUpdate.put("model", newCar.getModel());
+        }
+        if (nonNull(newCar.getColor()) && !queriedCar.get().getColor().equals(newCar.getColor())) {
+            fieldsToUpdate.put("color", newCar.getColor());
         }
 
         final Car updatedCar = carRepository.updatePartialCarData(queriedCar.get(), fieldsToUpdate);

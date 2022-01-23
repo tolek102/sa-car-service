@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car-Service</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Car-Service Api for AkademiaSpring.pl</h1>
+<h1>==============================</h1>
+<br>
+<!--<p th:text="'Hello ' + ${name}"></p>-->
+
+<a href="cars/add-car">Add new Car</a>
+<br>
+<div>
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Mark</th>
+            <th>Model</th>
+            <th>Color</th>
+        </tr>
+        <tr th:each="car: ${cars}">
+            <td th:text="${car.getId()}"></td>
+            <td th:text="${car.getMark()}"></td>
+            <td th:text="${car.getModel()}"></td>
+            <td th:text="${car.getColor()}"></td>
+            <td><a th:href="@{/cars/{id}/edit-car(id=${car.id})}">Edit</a></td>
+            <td><a th:href="@{/cars/{id}/delete(id=${car.id})}">Delete</a></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

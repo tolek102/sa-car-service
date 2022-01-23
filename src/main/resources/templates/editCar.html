@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Car</title>
+</head>
+<body>
+
+<h3>Enter data of new car:</h3>
+<form action="#" th:action="@{/cars/{id}/edit(id=${carToEdit.id})}" th:object="${newCar}" method="post">
+    <p>Id: <input type="text" th:value="${carToEdit.id}" name="id" /></p>
+    <p>Mark: <input type="text" th:value="${carToEdit.mark}" name="mark" /></p>
+    <p>Model: <input type="text" th:value="${carToEdit.model}" name="model" /></p>
+
+    <p>Color:
+        <select name="color">
+            <option th:each="colorOpt : ${T(pl.springacademy.carservice.model.Color).values()}"
+                    th:value="${colorOpt}"
+                    th:text="${colorOpt}"
+                    th:selected="${colorOpt} == ${carToEdit.color}"}>
+            </option>
+        </select>
+    </p>
+    <p>
+        <input type="submit" value="Submit" />
+        <input type="reset" value="Reset" />
+    </p>
+</form>
+
+<a href="/cars">Go to car list</a>
+<br>
+<a href="/cars/add-car">Add new Car</a>
+
+
+</body>
+</html>

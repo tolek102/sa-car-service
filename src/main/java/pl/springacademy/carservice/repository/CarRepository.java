@@ -46,6 +46,7 @@ public class CarRepository {
     }
 
     public void updateFullCar(final Car oldCar, final Car newCar) {
+
         carList.remove(oldCar);
         carList.add(newCar);
         log.info("Car with id {} was fully updated", oldCar.getId());

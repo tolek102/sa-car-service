@@ -12,8 +12,8 @@
     <groupId>pl.springacademy</groupId>
     <artifactId>car-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>sa-m3-car-service</name>
-    <description>sa-m3-car-service</description>
+    <name>sa-car-service</name>
+    <description>sa-car-service</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -21,6 +21,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
         <dependency>
@@ -58,6 +63,11 @@
             <version>2.6.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>2.6.2</version>
+        </dependency>
 
     </dependencies>
 
