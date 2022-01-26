@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,22 +29,22 @@ public class CarController {
     private final CarService carService;
 
     @GetMapping("/cars")
-    public String getAllCars(Model model) {
+    public String getAllCars(@RequestParam(value = "message", required = false) final String message, final Model model) {
         final List<Car> allCars = carService.getAllCars();
 
         if (CollectionUtils.isEmpty(allCars)) {
             final String errorMessage = "There are no cars in database";
             log.error(errorMessage);
-            model.addAttribute("errorMessage", errorMessage);
-            return "error";
+            model.addAttribute("message", errorMessage);
+            return "cars";
         }
-//        model.addAttribute("name", "Paweł");
         model.addAttribute("cars", allCars);
+        model.addAttribute("message", message);
         return "cars";
     }
 
     @GetMapping("/cars/{id}")
-    public String getCarById(@PathVariable final int id, Model model) {
+    public String getCarById(@PathVariable final int id, final Model model, final RedirectAttributes attributes) {
         final Optional<Car> carById = carService.getCarById(id);
 
 
@@ -50,48 +52,53 @@ public class CarController {
             model.addAttribute("cars", Collections.singletonList(carById.get()));
         } else {
             final String errorMessage = String.format("Car with id %d not found", id);
-            model.addAttribute("errorMessage", errorMessage);
-            return "error";
+            attributes.addAttribute("message", errorMessage);
+            return "redirect:/cars";
         }
         return "cars";
     }
 
     @PostMapping("cars/add")
-    public String addCar(@Valid @ModelAttribute final Car car, Model model) {
+    public String addCar(@Valid @ModelAttribute final Car car, final RedirectAttributes attributes) {
         final Optional<Car> addedCar = carService.addCar(car);
 
         if (addedCar.isEmpty()) {
             final String errorMessage = String.format("Car with id %d already exist", car.getId());
-            model.addAttribute("errorMessage", errorMessage);
-            return "error";
+            attributes.addAttribute("message", errorMessage);
+            return "redirect:/cars/add-car";
         }
+        attributes.addAttribute("message", "Car with Id : '" + car.getId() + "' was added successfully!");
         return "redirect:/cars/add-car";
     }
 
     @GetMapping("cars/add-car")
-    public String addCar(Model model) {
+    public String addCar(@RequestParam(value = "message", required = false) final String message, final Model model) {
         final List<Car> allCars = carService.getAllCars();
 
+        model.addAttribute("message", message);
         model.addAttribute("cars", allCars);
         model.addAttribute("newCar", new Car());
         return "addCar";
     }
 
     @PostMapping("cars/{id}/edit")
-    public String editCar(@PathVariable final int id, @Valid @ModelAttribute("updatedCar") final Car updatedCar, Model model) {
+    public String editCar(@PathVariable final int id, @Valid @ModelAttribute("updatedCar") final Car updatedCar,
+            final RedirectAttributes attributes) {
         carService.updateCarById(id, updatedCar);
+
+        attributes.addAttribute("message", "Car with Id : '" + id + "' updated successfully!");
 
         return "redirect:/cars";
     }
 
     @GetMapping("cars/{id}/edit-car")
-    public String editCar(@PathVariable final int id, Model model) {
+    public String editCar(@PathVariable final int id, final Model model, final RedirectAttributes attributes) {
         final Optional<Car> car = carService.getCarById(id);
 
         if (car.isEmpty()) {
-            final String errorMessage = String.format("Car with id %d not existing", id);
-            model.addAttribute("errorMessage", errorMessage);
-            return "error";
+            final String errorMessage = String.format("Car with id %d not found", id);
+            attributes.addAttribute("message", errorMessage);
+            return "redirect:/cars";
         }
 
         model.addAttribute("carToEdit", car.get());
@@ -100,14 +107,15 @@ public class CarController {
     }
 
     @GetMapping("/cars/{id}/delete")
-    public String deleteCarById(@PathVariable final int id, Model model) {
+    public String deleteCarById(@PathVariable final int id, final RedirectAttributes attributes) {
         final Optional<Car> car = carService.deleteCarById(id);
 
         if (car.isEmpty()) {
             final String errorMessage = String.format("Car with id %d not found", id);
-            model.addAttribute("errorMessage", errorMessage);
-            return "error";
+            attributes.addAttribute("message", errorMessage);
+            return "redirect:/cars";
         }
+        attributes.addAttribute("message", "Car with Id : '" + id + "' is removed successfully!");
         return "redirect:/cars";
     }
 }

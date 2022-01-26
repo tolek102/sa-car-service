@@ -72,6 +72,9 @@
     </style>
 </head>
 <body>
+<div th:if="${message != null}">
+    <h1 style="color: red" th:text="${message}"></h1>
+</div>
 
 <h3>Enter data of new car:</h3>
 
@@ -94,7 +97,6 @@
 </form>
 
 <a href="/cars" class="button button">Go to car list</a>
-
 
 </body>
 </html>

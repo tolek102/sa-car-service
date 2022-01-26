@@ -82,7 +82,9 @@
 <h1>Car-Service Api for AkademiaSpring.pl</h1>
 <h1>==============================</h1>
 <br>
-<!--<p th:text="'Hello ' + ${name}"></p>-->
+<div th:if="${message != null}">
+    <h1 style="color: red" th:text="${message}"></h1>
+</div>
 <p>
     <a href="cars/add-car" class="button button3">Add new Car</a>
 </p>
