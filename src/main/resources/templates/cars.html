@@ -85,6 +85,23 @@
 <div th:if="${message != null}">
     <h1 style="color: red" th:text="${message}"></h1>
 </div>
+
+<form action="#" th:action="@{/cars/productionYear}" method="get">
+    <h3>
+    <p>
+        <span> Search by production year range from: <input type="number" th:value=2000 th:name="beginProductionYear" /></span>
+        <span>till: <input type="number" th:name="endProductionYear" /></span>
+    </p>
+    </h3>
+    <p>
+        <input type="submit" value="Search" class="button button" />
+        <input type="reset" value="Reset" class="button button2"/>
+    </p>
+</form>
+
+<div th:if="${withFilter != null && withFilter == true}">
+    <a href="/cars" class="button button">Show full car list</a>
+</div>
 <p>
     <a href="cars/add-car" class="button button3">Add new Car</a>
 </p>
@@ -95,12 +112,14 @@
             <th>ID</th>
             <th>Mark</th>
             <th>Model</th>
+            <th>Production Year</th>
             <th>Color</th>
         </tr>
         <tr th:each="car: ${cars}">
             <td th:text="${car.getId()}"></td>
             <td th:text="${car.getMark()}"></td>
             <td th:text="${car.getModel()}"></td>
+            <td th:text="${car.getProductionYear()}"></td>
             <td th:text="${car.getColor()}"></td>
             <td><a th:href="@{/cars/{id}/edit-car(id=${car.id})}" class="button button">Edit</a></td>
             <td><a th:href="@{/cars/{id}/delete(id=${car.id})}" class="button button2">Delete</a></td>

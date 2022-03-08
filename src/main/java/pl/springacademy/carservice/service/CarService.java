@@ -1,8 +1,7 @@
 package pl.springacademy.carservice.service;
 
-import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -16,6 +15,7 @@ import pl.springacademy.carservice.model.Car;
 import pl.springacademy.carservice.model.Color;
 import pl.springacademy.carservice.repository.CarRepository;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Slf4j
@@ -28,16 +28,16 @@ public class CarService {
     @EventListener(ApplicationReadyEvent.class)
     public List<Car> getAllCars() {
 
-        return carRepository.getAllCars();
+        return carRepository.findAll();
     }
 
-    public Optional<Car> getCarById(final int id) {
+    public Optional<Car> getCarById(final Long id) {
 
-        return findCarById(id);
+        return carRepository.findById(id);
     }
 
     public List<Car> getCarsByColor(final Color color) {
-        final List<Car> carList = carRepository.getAllCars();
+        final List<Car> carList = carRepository.findAll();
 
         return carList.stream()
                 .filter(car -> car.getColor().equals(color))
@@ -45,80 +45,30 @@ public class CarService {
     }
 
     public Optional<Car> addCar(final Car newCar) {
-        final Optional<Car> queriedCar = findCarById(newCar.getId());
 
-        if (queriedCar.isPresent()) {
-            log.error("Car with id {} already exist", newCar.getId());
-            return Optional.empty();
-        }
-
-        carRepository.addCar(newCar);
+        carRepository.save(newCar);
         return Optional.of(newCar);
     }
 
-    public Car addOrUpdateCar(final int id, final Car newCar) {
-        final Optional<Car> queriedCar = findCarById(id);
+    public void updateCarById(final Long id, final Car newCar) {
+        final Optional<Car> queriedCar = carRepository.findById(id);
 
         if (queriedCar.isEmpty()) {
-            log.info("Car with id {} not found. Creating new database entry", id);
-            carRepository.addCar(newCar);
-            return newCar;
+            throw new IllegalArgumentException("Car with id " + id + " not found");
         }
-
-        log.info("Car with id {} was found. Performing update", id);
-        carRepository.updateFullCar(queriedCar.get(), newCar);
-        return newCar;
+        carRepository.update(id, newCar);
     }
 
-    public Optional<Car> updateCarById(final int id, final Map<Object, Object> fieldsToUpdate) {
-        final Optional<Car> queriedCar = findCarById(id);
+    public void deleteCarById(final Long id) {
 
-        if (queriedCar.isEmpty()) {
-            return Optional.empty();
-        }
-
-        final Car updatedCar = carRepository.updatePartialCarData(queriedCar.get(), fieldsToUpdate);
-        return Optional.of(updatedCar);
+        carRepository.delete(id);
     }
 
-    public Optional<Car> updateCarById(final int id, final Car newCar) {
-        final Optional<Car> queriedCar = findCarById(id);
+    public List<Car> getCarByProductionYearRange(final Integer beginProductionYear, final Integer endProductionYear) {
 
-        if (queriedCar.isEmpty()) {
-            return Optional.empty();
+        if (beginProductionYear > endProductionYear) {
+            throw new IllegalStateException("Begin of production year range can't be greater than end year");
         }
-
-        final Map<Object, Object> fieldsToUpdate = new HashMap<>();
-
-        if (nonNull(newCar.getMark()) && !queriedCar.get().getMark().equals(newCar.getMark())) {
-            fieldsToUpdate.put("mark", newCar.getMark());
-        }
-        if (nonNull(newCar.getModel()) && !queriedCar.get().getModel().equals(newCar.getModel())) {
-            fieldsToUpdate.put("model", newCar.getModel());
-        }
-        if (nonNull(newCar.getColor()) && !queriedCar.get().getColor().equals(newCar.getColor())) {
-            fieldsToUpdate.put("color", newCar.getColor());
-        }
-
-        final Car updatedCar = carRepository.updatePartialCarData(queriedCar.get(), fieldsToUpdate);
-        return Optional.of(updatedCar);
-    }
-
-    public Optional<Car> deleteCarById(final int id) {
-        final Optional<Car> queriedCar = findCarById(id);
-
-        if (queriedCar.isEmpty()) {
-            return Optional.empty();
-        }
-        carRepository.deleteCar(queriedCar.get());
-        return Optional.of(queriedCar.get());
-    }
-
-    private Optional<Car> findCarById(final int id) {
-        final List<Car> carList = carRepository.getAllCars();
-
-        return carList.stream()
-                .filter(car -> car.getId() == id)
-                .findFirst();
+        return carRepository.findByProductionYearRange(beginProductionYear, endProductionYear);
     }
 }

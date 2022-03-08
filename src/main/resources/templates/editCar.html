@@ -75,10 +75,9 @@
 
 <h3>Enter data of new car:</h3>
 <form action="#" th:action="@{/cars/{id}/edit(id=${carToEdit.id})}" th:object="${newCar}" method="post">
-    <p>Id: <input type="text" th:value="${carToEdit.id}" name="id" /></p>
     <p>Mark: <input type="text" th:value="${carToEdit.mark}" name="mark" /></p>
     <p>Model: <input type="text" th:value="${carToEdit.model}" name="model" /></p>
-
+    <p>Production Year: <input type="number" th:value="${carToEdit.productionYear}" name="productionYear" /></p>
     <p>Color:
         <select name="color">
             <option th:each="colorOpt : ${T(pl.springacademy.carservice.model.Color).values()}"

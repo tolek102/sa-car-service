@@ -1,10 +1,6 @@
 package pl.springacademy.carservice.model;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
-import org.springframework.hateoas.RepresentationModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,14 +12,15 @@ import lombok.NonNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Car extends RepresentationModel<Car> {
+public class Car {
 
-    @NonNull
-    private int id;
+    private Long id;
     @NotBlank
     private String mark;
     @NotBlank
     private String model;
+    @NonNull
+    private Integer productionYear;
     @NonNull
     private Color color;
 }
